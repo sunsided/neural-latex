@@ -69,18 +69,20 @@
 \tableofcontents
 \clearpage
 
-\section{Definition of the cost function}
+\section{The cost function and its gradient}
 
 Training neural networks is an optimization problem where we want to find the network weights in such a way that the network's output closely resembles the expected output.
 Specifically, we want to find the weight parameters that minimize the error between the network's output and the expected (training) output.
 In order to perform optimisation we need to be able to define a \textit{cost} metric $J$ for the network's training, and in our case that cost will be said training error.
 
 The error $e$ of the network given the parameters $\theta$ is simply the difference between the network's output $h_\theta(x)$ and the expected output $y$, such that
-%
+
 \begin{align}
 e &= h_\theta(x) - y
 \end{align}
-%
+
+\subsection{The sum of squared errors}
+
 A widely used and relatively simple differentiable error metric is the \textit{sum of squared errors} (SSE) that sums the (squared) errors over all training examples $\{x^{(i)}, y^{(i)}\}$:
 
 \begin{align}
@@ -98,7 +100,7 @@ J(\theta) % &= \frac{1}{2} \left( \frac{1}{m} E_{\mathrm{SSE}}(\theta) \right) \
 The idea of including the factor $\sfrac{1}{2}$ here is that scaling the cost metric does not change its qualitative meaning; it will do us a little favor when differentiating later, however.
 \todo{Some sources don't add it here but consider it a factor of the learning rate in gradient descent}
 
-Note that the cost function $J(\theta)$ is not a function of the training pairs $\{x, y\}$ as it is calculated over the complete training set, but rather the network's parameter $\theta$ themselves.
+The cost function $J(\theta)$ is not a function of the training pairs $\{x, y\}$ -- as it is calculated over the complete training set --, but rather a function of the network's parameter $\theta$ themselves.
 In order to determine in which way changing any of these parameters will change cost, we will inspect the partial derivative of $J(\theta)$ with respect to each individual component $\theta_j$ of $\theta$.
 
 Since the first derivative of a function describes the slope of that function at the point of evaluation, it can be used to determine the direction of the nearest local minimum or maximum.
@@ -107,23 +109,23 @@ Consequently, the set of all partial derivatives of $J(\theta)$ with respect to 
 This is called the function's gradient, or $\nabla J(\theta)$:
 
 \begin{align}
-\nabla J(\theta) &= \frac{\partial}{\partial \theta} J(\theta) \\
-&= \frac{\partial}{\partial \theta} \frac{1}{2m} \sum_{i=1}^m \left( h_\theta(x^{(i)}) - y^{(i)}\right)^2 \label{eq:nablaJ}
+\nabla J(\theta) &= \frac{\partial}{\partial \theta} J(\theta) %\\
+= \frac{\partial}{\partial \theta} \frac{1}{2m} \sum_{i=1}^m \left( h_\theta(x^{(i)}) - y^{(i)}\right)^2 \label{eq:nablaJ}
 \end{align}
 
 The sum rule%
 \footnote{Given $f(x) = a(x) + b(x)$, then $f'(x) = a'(x) + b'(x)$.}%
 of differentiation gives that the derivative of a sum is the sum of the derivatives, such that \cref{eq:nablaJ} becomes
-%
+
 \begin{align}
-\nabla J(\theta) &= \sum_{i=1}^m \enskip \frac{\partial}{\partial \theta} \frac{1}{2m} \left( h_\theta(x^{(i)}) - y^{(i)}\right)^2
+\nabla J(\theta) &= \sum_{i=1}^m \enskip \frac{\partial}{\partial \theta} \frac{1}{2m} \left( h_\theta(x^{(i)}) - y^{(i)}\right)^2 \label{eq:nablaJsorted}
 \end{align}
-%
+
 which leaves us with with the problem of finding $\frac{\partial}{\partial \theta} \frac{1}{2m} \left( h_\theta(x^{(i)}) - y^{(i)}\right)^2$.
 By application of the chain rule%
 \footnote{Given $f(x) = a(b(x))$, then $f'(x) = a'(b(x)) \cdot b'(x)$.}%
 , we find that
-%
+
 \begin{align}
 \frac{\partial}{\partial \theta} \frac{1}{2m} \left( h_\theta(x^{(i)}) - y^{(i)}\right)^2 &= 
 %
@@ -137,10 +139,30 @@ By application of the chain rule%
 \underbrace{
 \frac{\partial}{\partial \theta}
 \left( h_\theta(x^{(i)}) - y^{(i)}\right)}_{\text{inner derivative}}
-%
+ \label{eq:partialJ}
 \end{align}
 
+where the inner derivative is
 
+\begin{align}
+\frac{\partial}{\partial \theta}
+\left( h_\theta(x^{(i)}) - y^{(i)}\right)
+&=
+\frac{\partial}{\partial \theta}
+h_\theta(x^{(i)}) \label{eq:innerJ}
+\end{align}
+
+Using \cref{eq:partialJ,eq:innerJ} in \cref{eq:nablaJsorted} and moving the fraction out of the sum gives us
+
+\begin{align}
+\nabla J(\theta) &=
+\frac{1}{m} \sum_{i=1}^m 
+\, \cdot \, 
+\left( h_\theta(x^{(i)}) - y^{(i)}\right)
+\, \cdot \, 
+\frac{\partial}{\partial \theta} h_\theta(x^{(i)})
+\end{align}
+%
 
 
 
