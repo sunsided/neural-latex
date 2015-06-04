@@ -1,0 +1,148 @@
+\documentclass[a4paper, 11pt, ngerman, english]{article}
+
+\usepackage{eurosym}
+\usepackage{geometry}
+\usepackage{lipsum}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[ngerman,english]{babel}
+\usepackage[figurewithin=section, 
+		   font=small, 
+		   labelfont=bf]
+		   {caption}
+
+\usepackage{makeidx}
+
+\usepackage{amsmath}
+\usepackage{xfrac}
+\usepackage{cancel}
+
+\usepackage{varioref}
+\usepackage[pdftex]{hyperref}
+\usepackage{cleveref}
+\usepackage{siunitx}
+\usepackage{todonotes}
+
+\usepackage[babel]{csquotes}
+\usepackage[backend=biber,style=authoryear]{biblatex}
+
+\bibliography{quellen.bib}
+
+\geometry{a4paper,
+		top=25mm, 
+		left=40mm, 
+		right=25mm, 
+		bottom=30mm, 
+		headsep=10mm, 
+		footskip=12mm}
+
+\graphicspath{ {./images/} }
+
+\pagestyle{plain}
+\pagenumbering{arabic}
+
+% Generate the index and glossary
+\makeindex
+
+\newcommand{\name}[1]{\textsc{#1}}
+
+\begin{titlepage}
+	\title{\textbf{Neural Networks} \\ equations on overdrive}
+	\author{Markus Mayer}
+	\date{\today}
+\end{titlepage}
+
+\begin{document}
+
+%Term definitions
+%\newglossaryentry{sse}{name=SSE, description={Sum of Squared Errors}}
+
+\maketitle
+
+\begin{abstract}
+\textit{Artificial Neural Networks} are like regular neural networks, except they're artificial.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+
+\section{Definition of the cost function}
+
+Training neural networks is an optimization problem where we want to find the network weights in such a way that the network's output closely resembles the expected output.
+Specifically, we want to find the weight parameters that minimize the error between the network's output and the expected (training) output.
+In order to perform optimisation we need to be able to define a \textit{cost} metric $J$ for the network's training, and in our case that cost will be said training error.
+
+The error $e$ of the network given the parameters $\theta$ is simply the difference between the network's output $h_\theta(x)$ and the expected output $y$, such that
+%
+\begin{align}
+e &= h_\theta(x) - y
+\end{align}
+%
+A widely used and relatively simple differentiable error metric is the \textit{sum of squared errors} (SSE) that sums the (squared) errors over all training examples $\{x^{(i)}, y^{(i)}\}$:
+
+\begin{align}
+E_{\mathrm{SSE}}(\theta) &= \sum_{i=1}^m \left( e^{(i)} \right)^2 \\
+&= \sum_{i=1}^m \left( h_\theta(x^{(i)}) - y^{(i)} \right)^2
+\end{align}
+
+In order to make the cost function $J$ independent of the number of training examples, we will define it as (one half) the average sum of squared errors:
+
+\begin{align}
+J(\theta) % &= \frac{1}{2} \left( \frac{1}{m} E_{\mathrm{SSE}}(\theta) \right) \\
+          &= \frac{1}{2m} \sum_{i=1}^m \left( h_\theta(x^{(i)}) - y^{(i)} \right)^2
+\end{align}
+
+The idea of including the factor $\sfrac{1}{2}$ here is that scaling the cost metric does not change its qualitative meaning; it will do us a little favor when differentiating later, however.
+\todo{Some sources don't add it here but consider it a factor of the learning rate in gradient descent}
+
+Note that the cost function $J(\theta)$ is not a function of the training pairs $\{x, y\}$ as it is calculated over the complete training set, but rather the network's parameter $\theta$ themselves.
+In order to determine in which way changing any of these parameters will change cost, we will inspect the partial derivative of $J(\theta)$ with respect to each individual component $\theta_j$ of $\theta$.
+
+Since the first derivative of a function describes the slope of that function at the point of evaluation, it can be used to determine the direction of the nearest local minimum or maximum.
+Consequently, the set of all partial derivatives of $J(\theta)$ with respect to $\theta$ describes the direction in parameter space in which the nearest local minimum or maximum of the cost function can be found.
+
+This is called the function's gradient, or $\nabla J(\theta)$:
+
+\begin{align}
+\nabla J(\theta) &= \frac{\partial}{\partial \theta} J(\theta) \\
+&= \frac{\partial}{\partial \theta} \frac{1}{2m} \sum_{i=1}^m \left( h_\theta(x^{(i)}) - y^{(i)}\right)^2 \label{eq:nablaJ}
+\end{align}
+
+The sum rule of differentiation gives that the derivative of a sum is the sum of the derivatives, such that \cref{eq:nablaJ} becomes
+%
+\begin{align}
+\nabla J(\theta) &= \sum_{i=1}^m \enskip \frac{\partial}{\partial \theta} \frac{1}{2m} \left( h_\theta(x^{(i)}) - y^{(i)}\right)^2
+\end{align}
+%
+which leaves us with with the problem of finding $\frac{\partial}{\partial \theta} \frac{1}{2m} \left( h_\theta(x^{(i)}) - y^{(i)}\right)^2$.
+By application of the chain rule, we find that
+%
+\begin{align}
+\frac{\partial}{\partial \theta} \frac{1}{2m} \left( h_\theta(x^{(i)}) - y^{(i)}\right)^2 &= 
+%
+\frac{1}{\cancel{2}m} \underbrace{\cancel{2} \left( h_\theta(x^{(i)}) - y^{(i)}\right)}_{\text{outer derivative}}
+%
+\enskip \cdot \enskip
+\underbrace{
+\frac{\partial}{\partial \theta}
+\left( h_\theta(x^{(i)}) - y^{(i)}\right)}_{\text{inner derivative}}
+%
+\end{align}
+
+
+
+
+
+
+
+
+% print the list of figures
+\addcontentsline{toc}{section}{List of Figures}
+\listoffigures
+
+\printbibliography
+
+\end{document}
