@@ -111,21 +111,29 @@ This is called the function's gradient, or $\nabla J(\theta)$:
 &= \frac{\partial}{\partial \theta} \frac{1}{2m} \sum_{i=1}^m \left( h_\theta(x^{(i)}) - y^{(i)}\right)^2 \label{eq:nablaJ}
 \end{align}
 
-The sum rule of differentiation gives that the derivative of a sum is the sum of the derivatives, such that \cref{eq:nablaJ} becomes
+The sum rule%
+\footnote{Given $f(x) = a(x) + b(x)$, then $f'(x) = a'(x) + b'(x)$.}%
+of differentiation gives that the derivative of a sum is the sum of the derivatives, such that \cref{eq:nablaJ} becomes
 %
 \begin{align}
 \nabla J(\theta) &= \sum_{i=1}^m \enskip \frac{\partial}{\partial \theta} \frac{1}{2m} \left( h_\theta(x^{(i)}) - y^{(i)}\right)^2
 \end{align}
 %
 which leaves us with with the problem of finding $\frac{\partial}{\partial \theta} \frac{1}{2m} \left( h_\theta(x^{(i)}) - y^{(i)}\right)^2$.
-By application of the chain rule, we find that
+By application of the chain rule%
+\footnote{Given $f(x) = a(b(x))$, then $f'(x) = a'(b(x)) \cdot b'(x)$.}%
+, we find that
 %
 \begin{align}
 \frac{\partial}{\partial \theta} \frac{1}{2m} \left( h_\theta(x^{(i)}) - y^{(i)}\right)^2 &= 
 %
-\frac{1}{\cancel{2}m} \underbrace{\cancel{2} \left( h_\theta(x^{(i)}) - y^{(i)}\right)}_{\text{outer derivative}}
+\frac{1}{\cancel{2}m} 
+%\enskip \cdot \enskip 
+\, \cdot \, 
+\underbrace{\cancel{2} \left( h_\theta(x^{(i)}) - y^{(i)}\right)}_{\text{outer derivative}}
 %
-\enskip \cdot \enskip
+%\enskip \cdot \enskip
+\, \cdot \, 
 \underbrace{
 \frac{\partial}{\partial \theta}
 \left( h_\theta(x^{(i)}) - y^{(i)}\right)}_{\text{inner derivative}}
