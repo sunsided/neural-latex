@@ -20,6 +20,8 @@
 \usepackage{xfrac}
 \usepackage{cancel}
 
+\usepackage{pgfplots}
+
 \usepackage{varioref}
 \usepackage[pdftex]{hyperref}
 \usepackage{cleveref}
@@ -162,10 +164,38 @@ Using \cref{eq:partialJ,eq:innerJ} in \cref{eq:nablaJsorted} and moving the frac
 \, \cdot \, 
 \frac{\partial}{\partial \theta} h_\theta(x^{(i)})
 \end{align}
-%
 
+\subsection{Logistic regression cost}
 
+For binary classification problems, i.e. when $y_i \in \{0, 1\}$, the logistic regression cost function
 
+\begin{align}
+J(\theta) &= \frac{1}{m} \sum_{i=1}^m e^{(i)}
+\quad \text{with} \quad
+e^{(i)} = 
+\begin{cases}
+- \log \left( h_\theta(x^{(i)}) \right) \quad &\text{if} \quad y^{(i)} = 1\\
+- \log \left( 1 - h_\theta(x^{(i)}) \right) \quad &\text{if} \quad y^{(i)} = 0
+\end{cases}
+\label{eq:logRegCostBranch}
+\end{align}
+
+can be used instead of the SSE. \todo{reference to Andrew Ng}
+\Cref{fig:logreg_cost} \vpageref{fig:logreg_cost} shows the resulting curves for $y=0$ and $y=1$ respectively.
+Since the possible values for $y^{(i)}$ are are discrete and binary, \cref{eq:logRegCostBranch} can be written as
+
+\begin{align}
+J(\theta) &= -\frac{1}{m} \sum_{i=1}^m \left[ y^{(i)} \log \left( h_\theta(x^{(i)}) \right)  + \left(1 - y^{(i)}\right) \log \left( 1 - h_\theta(x^{(i)}) \right) \right]
+\end{align}
+
+for branchless evaluation.
+
+\begin{figure}[H]
+\centering
+\input{images/logreg_cost.tikz}
+\caption[Logistic regression cost function for $y=0$ and $y=1$.]{Logistic regression cost function $J(\theta)$. For $y=0$ and $h_\theta(x) \gg 0$ the hypothesis will be penalized with a high cost, likewise for $y=1$ and $h_\theta(x) \ll 1$. For $h_\theta(x) = y$ the cost will be zero.}
+\label{fig:logreg_cost}
+\end{figure}
 
 
 
