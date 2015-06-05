@@ -4,6 +4,8 @@
 \usepackage{geometry}
 \usepackage{lipsum}
 \usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
 \usepackage{wrapfig}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -105,21 +107,27 @@ The idea of including the factor $\sfrac{1}{2}$ here is that scaling the cost me
 The cost function $J(\theta)$ is not a function of the training pairs $\{x, y\}$ -- as it is calculated over the complete training set --, but rather a function of the network's parameter $\theta$ themselves.
 In order to determine in which way changing any of these parameters will change cost, we will inspect the partial derivative of $J(\theta)$ with respect to each individual component $\theta_j$ of $\theta$.
 
-Since the first derivative of a function describes the slope of that function at the point of evaluation, it can be used to determine the direction of the nearest local minimum or maximum.
-Consequently, the set of all partial derivatives of $J(\theta)$ with respect to $\theta$ describes the direction in parameter space in which the nearest local minimum or maximum of the cost function can be found.
+Since the first derivative of a function describes the slope of that function at the point of evaluation, it can be used to determine the direction of the nearest local maximum (or minimum).
+\Cref{fig:sselike_cost} \vpageref{fig:sselike_cost} visualizes this using the function $f(a,b)=a^2-ab$.
+Consequently, the set of all partial derivatives of $J(\theta)$ with respect to $\theta$ describes the direction in parameter space in which the nearest local maximum (or, by sign flip, minimum) of the cost function can be found.
 
 \begin{figure}[H]
+	\begin{subfigure}[b]{\textwidth}
 	\centering
 	\input{images/error_mesh.tikz}
-	\caption[Surface plot of $f(x,y)=(x-y)^2$.]{Surface plot of $f(x,y)=(x-y)^2$. Shows the parameter valley in which the cost function will be minimal.}
-	\label{fig:sse_cost_mesh}
-\end{figure}
+	\caption[Surface plot of $f(a,b)=a^2-ab$.]{Surface plot of $f(a,b)=a^2-ab$. Shows the cost with respect to the parameters $a,b$. Two local minima exist, one on either side of the valley.}
+	\label{fig:sselike_cost_mesh}
+	\end{subfigure}
 
-\begin{figure}[H]
+	\begin{subfigure}[b]{\textwidth}
 	\centering
 	\input{images/error_quiver.tikz}
-	\caption[Quiver plot of $f(x,y)=(x-y)^2$.]{Gradient vector field for $f(x,y)=(x-y)^2$. Length and direction of the vectors represent magnitude and sign of the partial derivative.}
-	\label{fig:sse_cost_quiver}
+	\caption[Quiver plot of $f(a,b)=a^2-ab$.]{Gradient vector field for $f(a,b)=a^2-ab$. Length and direction of the vectors represent magnitude and sign of the partial derivative, which can be interpreted as the "uphill" direction.}
+	\label{fig:sselike_cost_quiver}
+	\end{subfigure}
+	
+	\caption{Visualization of $f(a,b)=a^2-ab$ and its partial derivatives.}
+	\label{fig:sselike_cost}
 \end{figure}
 
 

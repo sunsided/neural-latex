@@ -1,18 +1,18 @@
 \begin{tikzpicture}
 
 \begin{axis}[
-	domain=-1:1,
-	xmax=1,
-	ymax=1,
+	domain=-2:2,
 %	axis lines=middle,
     	axis line style={->},
-    	xlabel={$x$},
-	ylabel={$y$},
-	zlabel={$f(x,y) = (x-y)^2$}
+    	xlabel={$a$},
+    	xlabel style=blue,
+	ylabel={$b$},
+	ylabel style=red,
+	zlabel={$f(a,b)=a^2-ab$}
 ]
 \addplot3[
 	surf        ] 
-        {(x-y)^2};
+        {(x-y)*x};
 
 %\addplot3[black,/pgfplots/quiver,
 %	quiver/u=x,

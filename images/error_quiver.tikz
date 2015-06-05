@@ -6,11 +6,11 @@
 	ymax=2,
 %	axis lines=middle,
     	axis line style={->},
-    	xlabel={$\frac{\partial}{\partial x} f(x,y) = 2(xy)$},
+    	xlabel={$\frac{\partial}{\partial a} f(a,b) = 2a-b$},
     	xlabel style=blue,
-	ylabel={$\frac{\partial}{\partial y} f(x,y) = 2y-2x$},
+	ylabel={$\frac{\partial}{\partial b} f(a,b) = -a$},
 	ylabel style=red,
-	y label style={at={(axis description cs:-0.05,.5)},anchor=south},
+	y label style={at={(axis description cs:-0.1,.5)},anchor=south},
 	view={0}{90}
 ]
 %\addplot3[
@@ -25,7 +25,7 @@
 %	-stealth,samples=10] {x^2+y^2};
 
 \addplot3[blue,/pgfplots/quiver,
-	quiver/u=2*(x-y),
+	quiver/u=2*x-y,
 	quiver/v=0,
 	quiver/w=0,
 	quiver/scale arrows=0.1,
@@ -33,7 +33,7 @@
 
 \addplot3[red,/pgfplots/quiver,
 	quiver/u=0,
-	quiver/v=2*y-2*x,
+	quiver/v=-x,
 	quiver/w=0,
 	quiver/scale arrows=0.1,
 	-stealth,samples=10] {0};
