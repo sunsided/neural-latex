@@ -1,0 +1,40 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+	domain=-1:1,
+	xmax=1,
+	ymax=1,
+%	axis lines=middle,
+    	axis line style={->},
+    	xlabel={$x$},
+	ylabel={$y$},
+	zlabel={$f(x,y) = (x-y)^2$}
+]
+\addplot3[
+	surf        ] 
+        {(x-y)^2};
+
+%\addplot3[black,/pgfplots/quiver,
+%	quiver/u=x,
+%	quiver/v=y,
+%	quiver/w=x^2+y^2,
+%	quiver/scale arrows=0.1,
+%	-stealth,samples=10] {x^2+y^2};
+
+%\addplot3[blue,/pgfplots/quiver,
+%	quiver/u=x,
+%	quiver/v=0,
+%	quiver/w=0,
+%	quiver/scale arrows=0.25,
+%	-stealth,samples=10] {0};
+%
+%\addplot3[red,/pgfplots/quiver,
+%	quiver/u=0,
+%	quiver/v=y,
+%	quiver/w=0,
+%	quiver/scale arrows=0.25,
+%	-stealth,samples=10] {0};
+
+\end{axis}
+
+\end{tikzpicture}

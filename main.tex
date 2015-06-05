@@ -108,6 +108,21 @@ In order to determine in which way changing any of these parameters will change 
 Since the first derivative of a function describes the slope of that function at the point of evaluation, it can be used to determine the direction of the nearest local minimum or maximum.
 Consequently, the set of all partial derivatives of $J(\theta)$ with respect to $\theta$ describes the direction in parameter space in which the nearest local minimum or maximum of the cost function can be found.
 
+\begin{figure}[H]
+	\centering
+	\input{images/error_mesh.tikz}
+	\caption[Surface plot of $f(x,y)=(x-y)^2$.]{Surface plot of $f(x,y)=(x-y)^2$. Shows the parameter valley in which the cost function will be minimal.}
+	\label{fig:sse_cost_mesh}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\input{images/error_quiver.tikz}
+	\caption[Quiver plot of $f(x,y)=(x-y)^2$.]{Gradient vector field for $f(x,y)=(x-y)^2$. Length and direction of the vectors represent magnitude and sign of the partial derivative.}
+	\label{fig:sse_cost_quiver}
+\end{figure}
+
+
 This is called the function's gradient, or $\nabla J(\theta)$:
 
 \begin{align}
@@ -191,10 +206,10 @@ J(\theta) &= -\frac{1}{m} \sum_{i=1}^m \left[ y^{(i)} \log \left( h_\theta(x^{(i
 for branchless evaluation.
 
 \begin{figure}[H]
-\centering
-\input{images/logreg_cost.tikz}
-\caption[Logistic regression cost function for $y=0$ and $y=1$.]{Logistic regression cost function $J(\theta)$. For $y=0$ and $h_\theta(x) \gg 0$ the hypothesis will be penalized with a high cost, likewise for $y=1$ and $h_\theta(x) \ll 1$. For $h_\theta(x) = y$ the cost will be zero.}
-\label{fig:logreg_cost}
+	\centering
+	\input{images/logreg_cost.tikz}
+	\caption[Logistic regression cost function for $y=0$ and $y=1$.]{Logistic regression cost function $J(\theta)$. For $y=0$ and $h_\theta(x) \gg 0$ the hypothesis will be penalized with a high cost, likewise for $y=1$ and $h_\theta(x) \ll 1$. For $h_\theta(x) = y$ the cost will be zero.}
+	\label{fig:logreg_cost}
 \end{figure}
 
 

@@ -1,0 +1,43 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+	domain=-2:2,
+	xmax=2,
+	ymax=2,
+%	axis lines=middle,
+    	axis line style={->},
+    	xlabel={$\frac{\partial}{\partial x} f(x,y) = 2(xy)$},
+    	xlabel style=blue,
+	ylabel={$\frac{\partial}{\partial y} f(x,y) = 2y-2x$},
+	ylabel style=red,
+	y label style={at={(axis description cs:-0.05,.5)},anchor=south},
+	view={0}{90}
+]
+%\addplot3[
+%	surf        ] 
+%        {x^2+y^2};
+
+%\addplot3[black,/pgfplots/quiver,
+%	quiver/u=x,
+%	quiver/v=y,
+%	quiver/w=x^2+y^2,
+%	quiver/scale arrows=0.1,
+%	-stealth,samples=10] {x^2+y^2};
+
+\addplot3[blue,/pgfplots/quiver,
+	quiver/u=2*(x-y),
+	quiver/v=0,
+	quiver/w=0,
+	quiver/scale arrows=0.1,
+	-stealth,samples=10] {0};
+
+\addplot3[red,/pgfplots/quiver,
+	quiver/u=0,
+	quiver/v=2*y-2*x,
+	quiver/w=0,
+	quiver/scale arrows=0.1,
+	-stealth,samples=10] {0};
+
+\end{axis}
+
+\end{tikzpicture}
