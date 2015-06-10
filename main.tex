@@ -4,17 +4,17 @@
 \usepackage{geometry}
 \usepackage{lipsum}
 \usepackage{graphicx}
-\usepackage{caption}
-\usepackage{subcaption}
-\usepackage{wrapfig}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{lmodern}
-\usepackage[ngerman,english]{babel}
 \usepackage[figurewithin=section, 
 		   font=small, 
 		   labelfont=bf]
 		   {caption}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+\usepackage{lmodern}
+\usepackage[ngerman,english]{babel}
 
 \usepackage{makeidx}
 
@@ -22,7 +22,9 @@
 \usepackage{xfrac}
 \usepackage{cancel}
 
+\usepackage{color}
 \usepackage{pgfplots}
+\pgfplotsset{compat=1.11}
 
 \usepackage{varioref}
 \usepackage[pdftex]{hyperref}
@@ -32,6 +34,60 @@
 
 \usepackage[babel]{csquotes}
 \usepackage[backend=biber,style=authoryear]{biblatex}
+
+\usepackage{listings}
+
+% color definitions for listings
+\definecolor{bluekeywords}{rgb}{0.13,0.13,1}
+\definecolor{greencomments}{rgb}{0,0.5,0}
+\definecolor{redstrings}{rgb}{0.9,0,0}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{literate=
+  {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+  {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+  {à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+  {À}{{\`A}}1 {È}{{\'E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+  {ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+  {Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+  {â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+  {Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+  {œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+  {ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
+  {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+  {€}{{\EUR}}1 {£}{{\pounds}}1
+}
+
+\newcommand{\listingpartial}{\mbox{$\partial$}}
+
+%\lstdefinestyle{csharp}{
+%	language=[Sharp]C,
+%}
+
+\lstdefinestyle{matlab}{
+	language=matlab,
+	showspaces=false,
+	showtabs=false,
+	breaklines=true,
+	showstringspaces=false,
+	breakatwhitespace=true,
+	escapeinside={/*@}{@*/},
+	backgroundcolor=\color{backcolour},  
+	commentstyle=\color{greencomments},
+	keywordstyle=\color{bluekeywords}\bfseries,
+	stringstyle=\color{redstrings},
+	basicstyle=\footnotesize\ttfamily,
+	columns=fullflexible,
+	tabsize=2,
+	numbers=left,                    
+    numbersep=5pt,
+    numberblanklines=true,
+    morekeywords={syms,pretty}
+}
+
+% cleveref bindings for other packages
+\crefname{lstlisting}{listing}{listings}
+\Crefname{lstlisting}{Listing}{Listings}
 
 \bibliography{quellen.bib}
 
@@ -182,11 +238,43 @@ Using \cref{eq:partialJ,eq:innerJ} in \cref{eq:nablaJsorted} and moving the frac
 \begin{align}
 \nabla J(\theta) &=
 \frac{1}{m} \sum_{i=1}^m 
-\, \cdot \, 
+\, 
 \left( h_\theta(x^{(i)}) - y^{(i)}\right)
 \, \cdot \, 
 \frac{\partial}{\partial \theta} h_\theta(x^{(i)})
 \end{align}
+
+\Cref{lst:matlab-1st-derivative} shows a Matlab script to determine the first derivative of the squared error function.
+Because $- (y - h_\theta(x)) = (-y + h_\theta(x)) = (h_\theta(x) - y)$, the output is equivalent to \cref{eq:partialJ}.
+
+\begin{lstlisting}[label=lst:matlab-1st-derivative,caption=First derivative of the squared error function in Matlab, style=matlab]
+>> syms h(t,x) y m
+>> diff(1/(2*m)*(h(t,x)-y)^2, t)
+
+ans =
+ 
+-(diff(h(t, x), t)*(y - h(t, x)))/m
+\end{lstlisting}
+
+\Cref{lst:matlab-2nd-derivative} determines the second derivative of the squared error function as
+
+\begin{align}
+\nabla^2 J(\theta) &= 
+\frac{1}{m} \sum_{i=1}^m 
+\left[
+\left(\frac{\partial}{\partial \theta} h_\theta(x^{(i)})\right)^2 +\left( h_\theta(x^{(i)}) - y^{(i)} \right) \cdot \frac{\partial^2}{\partial \theta^2} h_\theta(x^{(i)}) 
+\right]
+\end{align}
+
+\begin{lstlisting}[label=lst:matlab-2nd-derivative,caption=Second derivative of the squared error function in Matlab, style=matlab]
+>> syms h(t,x) y m
+>> diff(1/(2*m)*(h(t,x)-y)^2, t, 2)
+
+ans =
+ 
+diff(h(t, x), t)^2/m - ((y - h(t, x))*diff(h(t, x), t, t))/m
+\end{lstlisting}
+
 
 \subsection{Logistic regression cost}
 
