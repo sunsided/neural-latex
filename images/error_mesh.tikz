@@ -2,17 +2,21 @@
 
 \begin{axis}[
 	domain=-2:2,
+	xmin=-2,
+	xmax=2,
+	ymin=-2,
+	ymax=2,
 %	axis lines=middle,
     	axis line style={->},
     	xlabel={$a$},
     	xlabel style=blue,
 	ylabel={$b$},
 	ylabel style=red,
-	zlabel={$f(a,b)=a^2-ab$}
+	zlabel={$f(a,b)=3a^2+b^2$},
 ]
 \addplot3[
 	surf        ] 
-        {(x-y)*x};
+        {(3*x*x+y*y};
 
 %\addplot3[black,/pgfplots/quiver,
 %	quiver/u=x,

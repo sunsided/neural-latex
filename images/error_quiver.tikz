@@ -4,11 +4,13 @@
 	domain=-2:2,
 	xmax=2,
 	ymax=2,
+	xmin=-2,
+	ymin=-2,
 %	axis lines=middle,
     	axis line style={->},
-    	xlabel={$\frac{\partial}{\partial a} f(a,b) = 2a-b$},
+    	xlabel={$\frac{\partial}{\partial a} f(a,b) = 6a$},
     	xlabel style=blue,
-	ylabel={$\frac{\partial}{\partial b} f(a,b) = -a$},
+	ylabel={$\frac{\partial}{\partial b} f(a,b) = 2b$},
 	ylabel style=red,
 	y label style={at={(axis description cs:-0.1,.5)},anchor=south},
 	view={0}{90}
@@ -17,26 +19,26 @@
 %	surf        ] 
 %        {x^2+y^2};
 
-%\addplot3[black,/pgfplots/quiver,
-%	quiver/u=x,
-%	quiver/v=y,
-%	quiver/w=x^2+y^2,
-%	quiver/scale arrows=0.1,
-%	-stealth,samples=10] {x^2+y^2};
+\addplot3[black,dotted,/pgfplots/quiver,
+	quiver/u=6*x,
+	quiver/v=2*y,
+	quiver/w=0,
+	quiver/scale arrows=0.1,
+	-stealth,samples=8] {0};
 
 \addplot3[blue,/pgfplots/quiver,
-	quiver/u=2*x-y,
+	quiver/u=6*x,
 	quiver/v=0,
 	quiver/w=0,
 	quiver/scale arrows=0.1,
-	-stealth,samples=10] {0};
+	-stealth,samples=8] {0};
 
 \addplot3[red,/pgfplots/quiver,
 	quiver/u=0,
-	quiver/v=-x,
+	quiver/v=2*y,
 	quiver/w=0,
 	quiver/scale arrows=0.1,
-	-stealth,samples=10] {0};
+	-stealth,samples=8] {0};
 
 \end{axis}
 
