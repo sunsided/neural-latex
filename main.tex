@@ -129,6 +129,11 @@
 \tableofcontents
 \clearpage
 
+\section{Gradient descent}
+\label{sec:gradientdescent}
+
+Learning rate $\lambda$\label{gdlearningrate}.% The learning rate is cross-referenced when talking about the first derivative of the cost function
+
 \section{The cost function and its gradient}
 
 Training neural networks is an optimization problem where we want to find the network weights in such a way that the network's output closely resembles the expected output.
@@ -157,8 +162,7 @@ J(\theta) % &= \frac{1}{2} \left( \frac{1}{m} E_{\mathrm{SSE}}(\theta) \right) \
           &= \frac{1}{2m} \sum_{i=1}^m \left( h_\theta(x^{(i)}) - y^{(i)} \right)^2
 \end{align}
 
-The idea of including the factor $\sfrac{1}{2}$ here is that scaling the cost metric does not change its qualitative meaning; it will do us a little favor when differentiating later, however.
-\todo{Some sources don't add it here but consider it a factor of the learning rate in gradient descent}
+The idea of including the factor $\sfrac{1}{2}$ here is that scaling the cost metric does not change its qualitative meaning; it will do us a little favor when differentiating later, however.\footnote{Some sources (such as \cite{DBLP:books/daglib/0031855}) incorporate this factor into the learning rate of the Gradient Descent algorithm instead, which is covered in \cref{sec:gradientdescent} \vpageref{gdlearningrate}.}
 
 The cost function $J(\theta)$ is not a function of the training pairs $\{x, y\}$ -- as it is calculated over the complete training set --, but rather a function of the network's parameter $\theta$ themselves.
 In order to determine in which way changing any of these parameters will change cost, we will inspect the partial derivative of $J(\theta)$ with respect to each individual component $\theta_j$ of $\theta$.
