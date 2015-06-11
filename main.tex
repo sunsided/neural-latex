@@ -165,10 +165,10 @@ J(\theta) % &= \frac{1}{2} \left( \frac{1}{m} E_{\mathrm{SSE}}(\theta) \right) \
 The idea of including the factor $\sfrac{1}{2}$ here is that scaling the cost metric does not change its qualitative meaning; it will do us a little favor when differentiating later, however.\footnote{Some sources (such as \cite{DBLP:books/daglib/0031855}) incorporate this factor into the learning rate of the Gradient Descent algorithm instead, which is covered in \cref{sec:gradientdescent} \vpageref{gdlearningrate}.}
 
 The cost function $J(\theta)$ is not a function of the training pairs $\{x, y\}$ -- as it is calculated over the complete training set --, but rather a function of the network's parameter $\theta$ themselves.
-In order to determine in which way changing any of these parameters will change cost, we will inspect the partial derivative of $J(\theta)$ with respect to each individual component $\theta_j$ of $\theta$.
+In order to determine in which way changing any of these parameters will change cost, we will inspect the partial derivative of $J(\theta)$ with respect to each individual component $\theta_j \in \theta$.
 
-Since the first derivative of a function describes the slope of that function at the point of evaluation, it can be used to determine the direction of the nearest local maximum (or minimum).
-\Cref{fig:sselike_cost} \vpageref{fig:sselike_cost} visualizes this using the function $f(a,b)=3a^2+b^2$.
+Since the first derivative of a function describes the slope of that function at the point of evaluation, it can be used to determine the direction of the nearest local maximum (or minimum), which is visualized by 
+\cref{fig:sselike_cost} \vpageref{fig:sselike_cost} using the function $f(a,b)=3a^2+b^2$.
 Consequently, the set of all partial derivatives of $J(\theta)$ with respect to $\theta$ describes the direction in parameter space in which the nearest local maximum (or, by sign flip, minimum) of the cost function can be found.
 
 \begin{figure}[H]
@@ -245,7 +245,7 @@ Using \cref{eq:partialJ,eq:innerJ} in \cref{eq:nablaJsorted} and moving the frac
 \, 
 \left( h_\theta(x^{(i)}) - y^{(i)}\right)
 \, \cdot \, 
-\frac{\partial}{\partial \theta} h_\theta(x^{(i)})
+\frac{\partial}{\partial \theta} h_\theta(x^{(i)}) \label{eq:sse1stDerivative}
 \end{align}
 
 \Cref{lst:matlab-1st-derivative} shows a Matlab script to determine the first derivative of the squared error function.
@@ -260,15 +260,84 @@ ans =
 -(diff(h(t, x), t)*(y - h(t, x)))/m
 \end{lstlisting}
 
-\Cref{lst:matlab-2nd-derivative} determines the Laplacian (i.e. the second derivative) of the squared error function as
+\subsubsection{Second derivative of the squared error function}
+
+The \textit{Laplacian} (second derivative) of the squared-error function can be obtained by differentiating \cref{eq:sse1stDerivative}, such that
+
+\begin{align}
+\nabla^2 J(\theta) = \frac{\partial^2}{\partial \theta^2} J(\theta) &=
+\frac{\partial}{\partial \theta} \left[
+\frac{1}{m} \sum_{i=1}^m 
+\, 
+\left( h_\theta(x^{(i)}) - y^{(i)}\right)
+\, \cdot \, 
+\frac{\partial}{\partial \theta} h_\theta(x^{(i)})
+\right] 
+\\
+&=
+\frac{1}{m} \sum_{i=1}^m 
+\, 
+\frac{\partial}{\partial \theta}
+\left[
+\left( h_\theta(x^{(i)}) - y^{(i)}\right)
+\, \cdot \, 
+\frac{\partial}{\partial \theta} h_\theta(x^{(i)})
+\right]
+\end{align}
+
+By application of the product rule%
+\footnote{Given $f(x) = a(x)\cdot b(x)$, then $f'(x) = a'(x)\cdot b(x) + a(x)\cdot b'(x)$.}%
+we obtain
+
+\begin{align}
+\begin{split}
+\frac{\partial}{\partial \theta}
+\left[
+\left( h_\theta(x^{(i)}) - y^{(i)} \right)
+\, \cdot \, 
+\frac{\partial}{\partial \theta} h_\theta(x^{(i)})
+\right]
+&=
+\frac{\partial}{\partial \theta}
+\left( h_\theta(x^{(i)}) - y^{(i)}\right)
+\, \cdot \, 
+\frac{\partial}{\partial \theta}
+h_\theta(x^{(i)}) \\
+&+
+\left( h_\theta(x^{(i)}) - y^{(i)}\right)
+\, \cdot \, 
+\frac{\partial^2}{\partial \theta^2}
+h_\theta(x^{(i)})
+\end{split} \label{eq:sse2ndDerivativeSteps}
+\end{align}
+
+In the first part, the sum rule is applied again, giving $\sfrac{\partial}{\partial \theta}
+\left( h_\theta(x^{(i)}) - y^{(i)}\right) = \sfrac{\partial}{\partial \theta}\,
+h_\theta(x^{(i)}) - \sfrac{\partial}{\partial \theta}\, y^{(i)}$. Since $y^{(i)}$ is independent of $\theta$, it follows that $\sfrac{\partial}{\partial \theta}\, y^{(i)} = 0$, such that
+
+\begin{align}
+\frac{\partial}{\partial \theta}
+\left( h_\theta(x^{(i)}) - y^{(i)}\right)
+\, \cdot \, 
+\frac{\partial}{\partial \theta}
+h_\theta(x^{(i)})
+&=
+\left( 
+\frac{\partial}{\partial \theta}
+h_\theta(x^{(i)})\right)^2
+\end{align}
+
+which gives the final result in \cref{eq:sse2ndDerivative}:
 
 \begin{align}
 \nabla^2 J(\theta) &= 
 \frac{1}{m} \sum_{i=1}^m 
 \left[
 \left(\frac{\partial}{\partial \theta} h_\theta(x^{(i)})\right)^2 +\left( h_\theta(x^{(i)}) - y^{(i)} \right) \cdot \frac{\partial^2}{\partial \theta^2} h_\theta(x^{(i)}) 
-\right]
+\right] \label{eq:sse2ndDerivative}
 \end{align}
+
+The Matlab script in \Cref{lst:matlab-2nd-derivative} consequently prints out the same result, apart from a factored-out sign.
 
 \begin{lstlisting}[label=lst:matlab-2nd-derivative,caption=Second derivative of the squared error function in Matlab, style=matlab]
 >> syms h(t,x) y m
