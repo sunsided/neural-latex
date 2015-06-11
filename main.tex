@@ -123,7 +123,7 @@
 \maketitle
 
 \begin{abstract}
-\textit{Artificial Neural Networks} are like regular neural networks, except they're artificial.
+\textit{Artificial Neural Networks} are like regular neural networks, except they're artificially complicated.
 \end{abstract}
 
 \tableofcontents
@@ -141,7 +141,7 @@ Specifically, we want to find the weight parameters that minimize the error betw
 In order to perform optimisation we need to be able to define a \textit{cost} metric $J$ for the network's training, and in our case that cost will be said training error.
 
 The error $e$ of the network given the parameters $\theta$ is simply the difference between the network's output $h_\theta(x)$ and the expected output $y$, such that
-
+%
 \begin{align}
 e &= h_\theta(x) - y
 \end{align}
@@ -149,14 +149,14 @@ e &= h_\theta(x) - y
 \subsection{The sum of squared errors}
 
 A widely used and relatively simple differentiable error metric is the \textit{sum of squared errors} (SSE) that sums the (squared) errors over all training examples $\{x^{(i)}, y^{(i)}\}$:
-
+%
 \begin{align}
 E_{\mathrm{SSE}}(\theta) &= \sum_{i=1}^m \left( e^{(i)} \right)^2 \\
 &= \sum_{i=1}^m \left( h_\theta(x^{(i)}) - y^{(i)} \right)^2
 \end{align}
 
 In order to make the cost function $J$ independent of the number of training examples, we will define it as (one half) the average sum of squared errors:
-
+%
 \begin{align}
 J(\theta) % &= \frac{1}{2} \left( \frac{1}{m} E_{\mathrm{SSE}}(\theta) \right) \\
           &= \frac{1}{2m} \sum_{i=1}^m \left( h_\theta(x^{(i)}) - y^{(i)} \right)^2
@@ -164,12 +164,13 @@ J(\theta) % &= \frac{1}{2} \left( \frac{1}{m} E_{\mathrm{SSE}}(\theta) \right) \
 
 The idea of including the factor $\sfrac{1}{2}$ here is that scaling the cost metric does not change its qualitative meaning; it will do us a little favor when differentiating later, however.\footnote{Some sources (such as \cite{DBLP:books/daglib/0031855}) incorporate this factor into the learning rate of the Gradient Descent algorithm instead, which is covered in \cref{sec:gradientdescent} \vpageref{gdlearningrate}.}
 
-The cost function $J(\theta)$ is not a function of the training pairs $\{x, y\}$ -- as it is calculated over the complete training set --, but rather a function of the network's parameter $\theta$ themselves.
-In order to determine in which way changing any of these parameters will change cost, we will inspect the partial derivative of $J(\theta)$ with respect to each individual component $\theta_j \in \theta$.
+The cost function $J(\theta)$ is not a function of the training pairs $\{x, y\}$ --- note that it is calculated over the complete training set ---, but rather a function of the network's parameter vector $\theta$.
+In order to determine in which way changing any of these parameters will change the cost, we will inspect the partial derivative of $J(\theta)$ with respect to each individual component $\theta_j \in \theta$, which is called the gradient $\nabla J(\theta)$.
 
-Since the first derivative of a function describes the slope of that function at the point of evaluation, it can be used to determine the direction of the nearest local maximum (or minimum), which is visualized by 
+Since the first derivative of a function describes the slope of that function at the point of evaluation, it can be used to determine the direction of the nearest local maximum (or, by sign flip, minimum). This is visualized by 
 \cref{fig:sselike_cost} \vpageref{fig:sselike_cost} using the function $f(a,b)=3a^2+b^2$.
-Consequently, the set of all partial derivatives of $J(\theta)$ with respect to $\theta$ describes the direction in parameter space in which the nearest local maximum (or, by sign flip, minimum) of the cost function can be found.
+
+Consequently, the vector of all partial derivatives of $J(\theta)$ with respect to $\theta$ describes the direction in parameter space in which the nearest local maximum (or minimum) of the cost function can be found.
 
 \begin{figure}[H]
 	\begin{subfigure}[b]{\textwidth}
@@ -191,8 +192,8 @@ Consequently, the set of all partial derivatives of $J(\theta)$ with respect to 
 \end{figure}
 
 
-This is called the function's gradient, or $\nabla J(\theta)$:
-
+The gradient of the squared error cost function is given as:
+%
 \begin{align}
 \nabla J(\theta) &= \frac{\partial}{\partial \theta} J(\theta) %\\
 = \frac{\partial}{\partial \theta} \frac{1}{2m} \sum_{i=1}^m \left( h_\theta(x^{(i)}) - y^{(i)}\right)^2 \label{eq:nablaJ}
@@ -201,16 +202,16 @@ This is called the function's gradient, or $\nabla J(\theta)$:
 The sum rule%
 \footnote{Given $f(x) = a(x) + b(x)$, then $f'(x) = a'(x) + b'(x)$.}%
 of differentiation gives that the derivative of a sum is the sum of the derivatives, such that \cref{eq:nablaJ} becomes
-
+%
 \begin{align}
 \nabla J(\theta) &= \sum_{i=1}^m \enskip \frac{\partial}{\partial \theta} \frac{1}{2m} \left( h_\theta(x^{(i)}) - y^{(i)}\right)^2 \label{eq:nablaJsorted}
 \end{align}
-
+%
 which leaves us with with the problem of finding $\frac{\partial}{\partial \theta} \frac{1}{2m} \left( h_\theta(x^{(i)}) - y^{(i)}\right)^2$.
 By application of the chain rule%
 \footnote{Given $f(x) = a(b(x))$, then $f'(x) = a'(b(x)) \cdot b'(x)$.}%
 , we find that
-
+%
 \begin{align}
 \frac{\partial}{\partial \theta} \frac{1}{2m} \left( h_\theta(x^{(i)}) - y^{(i)}\right)^2 &= 
 %
@@ -226,9 +227,9 @@ By application of the chain rule%
 \left( h_\theta(x^{(i)}) - y^{(i)}\right)}_{\text{inner derivative}}
  \label{eq:partialJ}
 \end{align}
-
+%
 where the inner derivative is
-
+%
 \begin{align}
 \frac{\partial}{\partial \theta}
 \left( h_\theta(x^{(i)}) - y^{(i)}\right)
@@ -238,7 +239,7 @@ h_\theta(x^{(i)}) \label{eq:innerJ}
 \end{align}
 
 Using \cref{eq:partialJ,eq:innerJ} in \cref{eq:nablaJsorted} and moving the fraction out of the sum gives us
-
+%
 \begin{align}
 \nabla J(\theta) &=
 \frac{1}{m} \sum_{i=1}^m 
@@ -263,7 +264,7 @@ ans =
 \subsubsection{Second derivative of the squared error function}
 
 The \textit{Laplacian} (second derivative) of the squared-error function can be obtained by differentiating \cref{eq:sse1stDerivative}, such that
-
+%
 \begin{align}
 \nabla^2 J(\theta) = \frac{\partial^2}{\partial \theta^2} J(\theta) &=
 \frac{\partial}{\partial \theta} \left[
@@ -288,7 +289,7 @@ The \textit{Laplacian} (second derivative) of the squared-error function can be 
 By application of the product rule%
 \footnote{Given $f(x) = a(x)\cdot b(x)$, then $f'(x) = a'(x)\cdot b(x) + a(x)\cdot b'(x)$.}%
 we obtain
-
+%
 \begin{align}
 \begin{split}
 \frac{\partial}{\partial \theta}
@@ -311,10 +312,10 @@ h_\theta(x^{(i)})
 \end{split} \label{eq:sse2ndDerivativeSteps}
 \end{align}
 
-In the first part, the sum rule is applied again, giving $\sfrac{\partial}{\partial \theta}
-\left( h_\theta(x^{(i)}) - y^{(i)}\right) = \sfrac{\partial}{\partial \theta}\,
-h_\theta(x^{(i)}) - \sfrac{\partial}{\partial \theta}\, y^{(i)}$. Since $y^{(i)}$ is independent of $\theta$, it follows that $\sfrac{\partial}{\partial \theta}\, y^{(i)} = 0$, such that
-
+In the first part, the sum rule is applied again, giving $\frac{\partial}{\partial \theta}
+\left( h_\theta(x^{(i)}) - y^{(i)}\right) = \frac{\partial}{\partial \theta}\,
+h_\theta(x^{(i)}) - \frac{\partial}{\partial \theta}\, y^{(i)}$. Since $y^{(i)}$ is independent of $\theta$, it follows that $\frac{\partial}{\partial \theta}\, y^{(i)} = 0$, such that
+%
 \begin{align}
 \frac{\partial}{\partial \theta}
 \left( h_\theta(x^{(i)}) - y^{(i)}\right)
@@ -326,9 +327,9 @@ h_\theta(x^{(i)})
 \frac{\partial}{\partial \theta}
 h_\theta(x^{(i)})\right)^2
 \end{align}
-
+%
 which gives the final result in \cref{eq:sse2ndDerivative}:
-
+%
 \begin{align}
 \nabla^2 J(\theta) &= 
 \frac{1}{m} \sum_{i=1}^m 
@@ -336,8 +337,10 @@ which gives the final result in \cref{eq:sse2ndDerivative}:
 \left(\frac{\partial}{\partial \theta} h_\theta(x^{(i)})\right)^2 +\left( h_\theta(x^{(i)}) - y^{(i)} \right) \cdot \frac{\partial^2}{\partial \theta^2} h_\theta(x^{(i)}) 
 \right] \label{eq:sse2ndDerivative}
 \end{align}
+%
+meaning that the Laplacian of the squared error cost function is governed by the first and second derivatives of the hypothesis $h_\theta(x)$ (e.g. the network).
 
-The Matlab script in \Cref{lst:matlab-2nd-derivative} consequently prints out the same result, apart from a factored-out sign.
+Last but not least, the Matlab script in \Cref{lst:matlab-2nd-derivative} prints out the same result as \cref{eq:sse2ndDerivative}, apart from a factored-out sign (similar to \cref{lst:matlab-1st-derivative}).
 
 \begin{lstlisting}[label=lst:matlab-2nd-derivative,caption=Second derivative of the squared error function in Matlab, style=matlab]
 >> syms h(t,x) y m
@@ -352,7 +355,7 @@ diff(h(t, x), t)^2/m - ((y - h(t, x))*diff(h(t, x), t, t))/m
 \subsection{Logistic regression cost}
 
 For binary classification problems, i.e. when $y_i \in \{0, 1\}$, the logistic regression cost function
-
+%
 \begin{align}
 J(\theta) &= \frac{1}{m} \sum_{i=1}^m e^{(i)}
 \quad \text{with} \quad
@@ -363,15 +366,15 @@ e^{(i)} =
 \end{cases}
 \label{eq:logRegCostBranch}
 \end{align}
-
+%
 is suggested to be used instead of the squared error (\cite{NgCourseraML2015}).
 \Cref{fig:logreg_cost} \vpageref{fig:logreg_cost} shows the resulting curves for $y=0$ and $y=1$ respectively.
 Since the possible values for $y^{(i)}$ are are discrete and binary, \cref{eq:logRegCostBranch} can be written as
-
+%
 \begin{align}
 J(\theta) &= -\frac{1}{m} \sum_{i=1}^m \left[ y^{(i)} \log \left( h_\theta(x^{(i)}) \right)  + \left(1 - y^{(i)}\right) \log \left( 1 - h_\theta(x^{(i)}) \right) \right]
 \end{align}
-
+%
 for branchless evaluation.
 
 \begin{figure}[H]
