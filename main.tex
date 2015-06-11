@@ -279,7 +279,7 @@ ans =
 
 \subsubsection{Second derivative of the squared error function}
 
-The \textit{Laplacian} (second derivative) of the squared-error function can be obtained by differentiating \cref{eq:sse1stDerivative}, such that
+The \textit{Jacobian} (second derivative) of the squared-error function can be obtained by differentiating \cref{eq:sse1stDerivative}, such that
 %
 \begin{align}
 \nabla^2 J(\theta) = \frac{\partial^2}{\partial \theta^2} J(\theta) &=
@@ -354,7 +354,7 @@ which gives the final result in \cref{eq:sse2ndDerivative}:
 \right] \label{eq:sse2ndDerivative}
 \end{align}
 %
-meaning that the Laplacian of the squared error cost function is governed by the first and second derivatives of the hypothesis $h_\theta(x)$ (e.g. the network).
+meaning that the Jacobian of the squared error cost function is governed by the first and second derivatives of the hypothesis $h_\theta(x)$ (e.g. the network).
 
 Last but not least, the Matlab script in \Cref{lst:matlab-2nd-derivative} prints out the same result as \cref{eq:sse2ndDerivative}, apart from a factored-out sign (similar to \cref{lst:matlab-1st-derivative}).
 
