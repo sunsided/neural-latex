@@ -135,7 +135,7 @@
 
 In order to determine the neural connection weights $\theta$, a multitude of local and global optimization algorithms can be used.
 One of the most widely used (or at least discussed) algorithms \todo{yeah ... where?} is the \textit{gradient descent}, described in \cref{sec:gradientdescent}.
-This algorithm and its variants observe the network's output error with regard to the connection weights during training and interpret it as a hilly landscape in parameter-space, where each valley represents parameters of (locally) lowest error and different variations of connection weights represent different hill formations.
+This algorithm and its variants observe the network's output error with regard to the connection weights during training (\cref{sec:costfunction}) and interpret it as a hilly landscape in parameter-space, where each valley represents parameters of (locally) lowest error and different variations of connection weights represent different hill formations.
 The objective is then to efficiently "climb downwards" these hills until a valley is reached, ideally finding the lowest valley, associated with zero error (i.e. a perfect network output).
 A visual example for such a landscape and the name-giving gradients can be found in \cref{fig:sselike_cost}.
 
@@ -149,6 +149,7 @@ A visual example for such a landscape and the name-giving gradients can be found
 Learning rate $\lambda$\label{gdlearningrate}.% The learning rate is cross-referenced when talking about the first derivative of the cost function
 
 \section{The cost function and its gradient}
+\label{sec:costfunction}
 
 Training neural networks is an optimization problem where we want to find the network weights in such a way that the network's output closely resembles the expected output.
 Specifically, we want to find the weight parameters that minimize the error between the network's output and the expected (training) output.
@@ -205,6 +206,7 @@ Consequently, the vector of all partial derivatives of $J(\theta)$ with respect 
 	\label{fig:sselike_cost}
 \end{figure}
 
+\subsubsection{First derivative of the squared error function}
 
 The gradient of the squared error cost function is given as:
 %
