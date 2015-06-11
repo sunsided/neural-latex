@@ -129,7 +129,21 @@
 \tableofcontents
 \clearpage
 
-\section{Gradient descent}
+\section{Feedforward and error backpropagation}
+
+\section{Connection weight estimation}
+
+In order to determine the neural connection weights $\theta$, a multitude of local and global optimization algorithms can be used.
+One of the most widely used (or at least discussed) algorithms \todo{yeah ... where?} is the \textit{gradient descent}, described in \cref{sec:gradientdescent}.
+This algorithm and its variants observe the network's output error with regard to the connection weights during training and interpret it as a hilly landscape in parameter-space, where each valley represents parameters of (locally) lowest error and different variations of connection weights represent different hill formations.
+The objective is then to efficiently "climb downwards" these hills until a valley is reached, ideally finding the lowest valley, associated with zero error (i.e. a perfect network output).
+A visual example for such a landscape and the name-giving gradients can be found in \cref{fig:sselike_cost}.
+
+\todo{conjugate gradients}
+\todo{Kalman}
+\todo{BFGS}
+
+\subsection{The gradient descent algorithm}
 \label{sec:gradientdescent}
 
 Learning rate $\lambda$\label{gdlearningrate}.% The learning rate is cross-referenced when talking about the first derivative of the cost function
