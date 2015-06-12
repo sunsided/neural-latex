@@ -368,9 +368,9 @@ diff(h(t, x), t)^2/m - ((y - h(t, x))*diff(h(t, x), t, t))/m
 \end{lstlisting}
 
 
-\subsection{Logistic regression cost}
+\subsection{Logistic cost}
 
-For binary classification problems, i.e. when $y_i \in \{0, 1\}$, the logistic regression cost function
+For binary classification problems, i.e. when $y_i \in \{0, 1\}$, and when using sigmoidal activation functions, the logistic cost function
 %
 \begin{align}
 J(\theta) &= \frac{1}{m} \sum_{i=1}^m e^{(i)}
@@ -383,7 +383,7 @@ e^{(i)} =
 \label{eq:logRegCostBranch}
 \end{align}
 %
-is suggested to be used instead of the squared error (\cite{NgCourseraML2015}).
+is suggested to be used instead of the squared error (\cite{Bishop:1995:NNP:525960,NgCourseraML2015}).
 \Cref{fig:logreg_cost} \vpageref{fig:logreg_cost} shows the resulting curves for $y=0$ and $y=1$ respectively.
 Since the possible values for $y^{(i)}$ are are discrete and binary, \cref{eq:logRegCostBranch} can be written as
 %
