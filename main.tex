@@ -174,7 +174,7 @@ A \algo{line search} is the one-dimensional minimization of a function $f(\vec{x
 %
 where $\vec{x}_{min}$ is the minimum of $f(\vec{x})$ along the direction $\vec{d}$, starting from point $\vec{x}$.
 
-While in \algo{gradient descent} the step width along the gradient of the error function $\nabla J(\thetavec)$ is given by a pre-determined parameter $\lambda$ (think "learning rate"), a more optimal solution would be to select the step width $\lambda$ in such a way that it minimizes the function along the direction of the gradient $\vec{d} = -\nabla J(\thetavec)$, such that
+While in \algo{gradient descent} the step width along the gradient of the error function $\nabla J(\thetavec)$ is given by a pre-determined parameter $\lambda$ (think "learning rate"), the optimal solution would be to select the step width $\lambda$ in such a way that it minimizes the function along the direction of the gradient $\vec{d} = -\nabla J(\thetavec)$, such that
 %
 \begin{align}
 \lambda &= \argmin_\lambda J(\thetavec - \lambda \, \nabla J(\thetavec)) \\
