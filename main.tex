@@ -108,6 +108,12 @@
 \makeindex
 
 \newcommand{\name}[1]{\textsc{#1}}
+\newcommand{\algo}[1]{\textit{#1}}
+
+% math commands
+\renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+\newcommand{\thetavec}{\ensuremath{\vec{\theta}}}
 
 \begin{titlepage}
 	\title{\textbf{Neural Networks} \\ equations on overdrive}
@@ -133,8 +139,8 @@
 
 \section{Connection weight optimization}
 
-In order to determine the neural connection weights $\theta$, a multitude of local and global optimization algorithms can be used.
-One of the most widely used (or at least discussed) algorithms \todo{yeah ... where?} is the \textit{gradient descent}, described in \cref{sec:gradientdescent}.
+In order to determine the neural connection weights $\thetavec$, a multitude of local and global optimization algorithms can be used.
+One of the most widely used (or at least discussed) algorithms \todo{yeah ... where?} is the \algo{gradient descent}, described in \cref{sec:gradientdescent}.
 This algorithm and its variants observe the network's output error with regard to the connection weights during training (\cref{sec:costfunction}) and interpret it as a hilly landscape in parameter-space, where each valley represents parameters of (locally) lowest error and different variations of connection weights represent different hill formations.
 The objective is then to efficiently "climb downwards" these hills until a valley is reached, ideally finding the lowest valley, associated with zero error (i.e. a perfect network output).
 A visual example for such a landscape and the name-giving gradients can be found in \cref{fig:sselike_cost}.
@@ -147,6 +153,35 @@ A visual example for such a landscape and the name-giving gradients can be found
 \label{sec:gradientdescent}
 
 Learning rate $\lambda$\label{gdlearningrate}.% The learning rate is cross-referenced when talking about the first derivative of the cost function
+
+By choosing the next evaluation point using a line search (\cref{sec:linesearch}), the gradient descent becomes the \algo{steepest descent} algorithm.
+
+\subsection{Line search minimization}
+\label{sec:linesearch}
+
+A \algo{line search} is the one-dimensional minimization of a function $f(\vec{x})$ given a search direction $\vec{d}$:
+%
+\begin{align}
+\lambda_{min} &= \argmin_\lambda f(\vec{x} + \lambda \vec{d}) \\
+\vec{x}_{min} &= \vec{x} + \lambda \vec{d}
+\end{align}
+%
+where $\vec{x}_{min}$ is the minimum of $f(\vec{x})$ along the direction $\vec{d}$, starting from point $\vec{x}$.
+
+While in \algo{gradient descent} the step width along the gradient of the error function $\nabla J(\thetavec)$ is given by a pre-determined parameter $\lambda$ (think "learning rate"), a more optimal solution would be to select the step width $\lambda$ in such a way that it minimizes the function along the direction of the gradient $\vec{d} = \nabla J(\thetavec)$, such that
+%
+\begin{align}
+\lambda &= \argmin_\lambda J(\thetavec + \lambda \, \nabla J(\thetavec)) \\
+\hat\thetavec &= \thetavec + \lambda \, \nabla J(\thetavec)
+\end{align}
+%
+where $\hat\thetavec$ would be the next point of gradient evaluation.
+Such an algorithm is called the \algo{steepest descent}.
+
+\subsection{Conjugate gradient descent algorithm}
+\label{sec:conjgradientdescent}
+
+Uses a line search, as described in \cref{sec:linesearch}.
 
 \section{The cost function and its gradient}
 \label{sec:costfunction}
@@ -163,7 +198,7 @@ e &= h_\theta(x) - y
 
 \subsection{The sum of squared errors}
 
-A widely used and relatively simple differentiable error metric is the \textit{sum of squared errors} (SSE) that sums the (squared) errors over all training examples $\{x^{(i)}, y^{(i)}\}$:
+A widely used and relatively simple differentiable error metric is the \algo{sum of squared errors} (SSE) that sums the (squared) errors over all training examples $\{x^{(i)}, y^{(i)}\}$:
 %
 \begin{align}
 E_{\mathrm{SSE}}(\theta) &= \sum_{i=1}^m \left( e^{(i)} \right)^2 \\
