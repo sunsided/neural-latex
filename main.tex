@@ -16,9 +16,12 @@
 \usepackage{lmodern}
 \usepackage[ngerman,english]{babel}
 
+\usepackage[super]{nth}
 \usepackage{makeidx}
 
 \usepackage{amsmath}
+\usepackage{bm}
+\usepackage{isomath}
 \usepackage{xfrac}
 \usepackage{cancel}
 
@@ -111,9 +114,12 @@
 \newcommand{\algo}[1]{\textit{#1}}
 
 % math commands
-\renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
+\renewcommand{\vec}{\vectorsym}
+\newcommand{\mat}{\matrixsym}
+\newcommand{\transp}{^{\mathstrut\scriptscriptstyle{\top}}}
 \DeclareMathOperator*{\argmin}{\arg\!\min}
 \newcommand{\thetavec}{\ensuremath{\vec{\theta}}}
+\newcommand{\order}[1]{\ensuremath{\mathcal{O}(#1)}}
 
 \begin{titlepage}
 	\title{\textbf{Neural Networks} \\ equations on overdrive}
@@ -168,15 +174,65 @@ A \algo{line search} is the one-dimensional minimization of a function $f(\vec{x
 %
 where $\vec{x}_{min}$ is the minimum of $f(\vec{x})$ along the direction $\vec{d}$, starting from point $\vec{x}$.
 
-While in \algo{gradient descent} the step width along the gradient of the error function $\nabla J(\thetavec)$ is given by a pre-determined parameter $\lambda$ (think "learning rate"), a more optimal solution would be to select the step width $\lambda$ in such a way that it minimizes the function along the direction of the gradient $\vec{d} = \nabla J(\thetavec)$, such that
+While in \algo{gradient descent} the step width along the gradient of the error function $\nabla J(\thetavec)$ is given by a pre-determined parameter $\lambda$ (think "learning rate"), a more optimal solution would be to select the step width $\lambda$ in such a way that it minimizes the function along the direction of the gradient $\vec{d} = -\nabla J(\thetavec)$, such that
 %
 \begin{align}
-\lambda &= \argmin_\lambda J(\thetavec + \lambda \, \nabla J(\thetavec)) \\
-\hat\thetavec &= \thetavec + \lambda \, \nabla J(\thetavec)
+\lambda &= \argmin_\lambda J(\thetavec - \lambda \, \nabla J(\thetavec)) \\
+\hat\thetavec &= \thetavec - \lambda \, \nabla J(\thetavec)
 \end{align}
 %
 where $\hat\thetavec$ would be the next point of gradient evaluation.
 Such an algorithm is called the \algo{steepest descent}.
+
+\subsubsection{Hessian approximation from gradient}
+
+Even though gradient information is suggested not to be used actively in line searches due to the computational overhead (\cite[ch.~7.6]{Bishop:1995:NNP:525960}), the optimal step length $\lambda$ for a quadratic error function can be calculated given the Hessian $\mat{H}$ as
+%
+\begin{align}
+\lambda &= -\frac{\vec{d}\transp \nabla J(\thetavec)}{\vec{d}\transp \mat{H} \vec{d}}
+\label{eq:cgquadraticlambda}
+\end{align}
+%
+where $\vec{d} = -\nabla J(\thetavec)$ at point $\thetavec$ (\cite[ch.~7.7.2]{Bishop:1995:NNP:525960}).
+
+In this case we can make use of the fact that
+%
+\begin{align}
+\vec{d}\transp \mat{H} &\equiv \vec{d}\transp \nabla \left(\nabla J(\thetavec) \right)
+\end{align}
+%
+and 
+%
+\begin{align}
+\left( \vec{d}\transp \mat{H} \right) \vec{d}
+   = \vec{d}\transp \left( \mat{H} \vec{d} \right)
+\end{align}
+%
+By definition of the derivative, 
+%
+\begin{align}
+\nabla_i \left(\nabla J(\thetavec) \right)
+  &= \frac{\partial}{\partial \thetavec_i} \left(\nabla J(\thetavec) \right) \\
+  &= \lim_{\epsilon \to 0+} \frac{\nabla J(\thetavec + \epsilon \vec{1}_i) - \nabla J(\thetavec)}{\epsilon}
+\end{align}
+%
+with $\vec{1}_i$ being the unit vector along dimension $i$, we obtain the first-order finite difference approximation
+%
+\begin{align}
+\nabla \left(\nabla J(\thetavec) \right) \, \vec{d}
+  &\approx \frac{\nabla J(\thetavec + \epsilon \vec{d}) - \nabla J(\thetavec)}{\epsilon}
+\end{align}
+%
+for small $\epsilon$, leaving residuals of $\order{\epsilon}$ (\cite{Pearlmutter94fastexact,Bishop:1995:NNP:525960}).
+
+Because this approximation will be subject to machine precision roundoffs, the central difference should be used instead, which gives
+%
+\begin{align}
+\nabla \left(\nabla J(\thetavec) \right) \, \vec{d}
+  &\approx \frac{\nabla J(\thetavec + \epsilon \vec{d}) - \nabla J(\thetavec - \epsilon \vec{d})}{2\epsilon}
+\end{align}
+%
+with residuals of $\order{\epsilon^2}$ (\cite{Bishop:1995:NNP:525960}).
 
 \subsection{Conjugate gradient descent algorithm}
 \label{sec:conjgradientdescent}
@@ -313,6 +369,8 @@ ans =
 \end{lstlisting}
 
 \subsubsection{Second derivative of the squared error function}
+
+\todo[inline]{delete that chapter}
 
 The second derivative of the squared-error function can be obtained by differentiating \cref{eq:sse1stDerivative}, such that
 %
